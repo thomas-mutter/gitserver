@@ -13,6 +13,8 @@ RUN chown -Rfv www-data:www-data /var/www/git
 COPY ./etc/git.conf /etc/apache2/sites-available/git.conf
 COPY ./mk-git-repo.sh /usr/bin/mkrepo
 RUN chmod +x /usr/bin/mkrepo
+RUN htpasswd -b -c /etc/apache2/git-auth git 'git*user'
+RUN chmod 0644 /etc/apache2/git-auth
 RUN a2dissite 000-default.conf
 RUN a2ensite git.conf
 RUN git config --system http.receivepack true
